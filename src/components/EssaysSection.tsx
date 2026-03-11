@@ -2,7 +2,13 @@
 
 import { useRef, useEffect, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Type,
+  Minus,
+  Plus,
+} from "lucide-react";
 
 const TITLES = [
   "On silence and attention",
@@ -50,7 +56,7 @@ const TITLES = [
   "Note to self",
   "Later",
   "Maybe",
-  "—",
+  "\u2014",
 ];
 
 const YEARS = [
@@ -62,7 +68,7 @@ const YEARS = [
   "2023",
   "2023",
   "2022",
-  "—",
+  "\u2014",
 ];
 
 const FAKE_ESSAYS = TITLES.map((title, i) => ({
@@ -76,58 +82,82 @@ type Essay = (typeof FAKE_ESSAYS)[number];
 const SCROLL_ZONE_RATIO = 0.28;
 const SCROLL_SPEED_BASE = 12;
 const SCROLL_SPEED_MAX = 36;
-const LERP = 0.28; // interpolazione velocità: più alto = risposta più rapida
+const LERP = 0.28;
+
+const ESSAY_FONT_SIZES = [
+  "text-sm",
+  "text-base",
+  "text-lg",
+  "text-xl",
+  "text-2xl",
+] as const;
+const DEFAULT_FONT_SIZE_INDEX = 1;
 
 export function EssaysSection({ onBack }: { onBack: () => void }) {
   const [hoveredEssay, setHoveredEssay] = useState<Essay | null>(null);
   const [selectedEssay, setSelectedEssay] = useState<Essay | null>(null);
-  type SidebarMode = "expanded" | "collapsed";
-  const [sidebarMode, setSidebarMode] = useState<SidebarMode>("expanded");
-  const displayEssay = selectedEssay ?? hoveredEssay;
+  const [essayFontSizeIndex, setEssayFontSizeIndex] = useState(
+    DEFAULT_FONT_SIZE_INDEX
+  );
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const displayEssay = hoveredEssay ?? selectedEssay;
   const listRef = useRef<HTMLDivElement>(null);
   const targetSpeedRef = useRef(0);
   const currentSpeedRef = useRef(0);
   const lastTimeRef = useRef<number>(0);
   const rafRef = useRef<number>(0);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const el = listRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const y = e.clientY - rect.top;
-    const h = rect.height;
-    const zone = h * SCROLL_ZONE_RATIO;
-
-    if (y < zone) {
-      const t = 1 - y / zone;
-      targetSpeedRef.current = -(
-        SCROLL_SPEED_BASE +
-        t * (SCROLL_SPEED_MAX - SCROLL_SPEED_BASE)
-      );
-    } else if (y > h - zone) {
-      const t = (y - (h - zone)) / zone;
-      targetSpeedRef.current =
-        SCROLL_SPEED_BASE + t * (SCROLL_SPEED_MAX - SCROLL_SPEED_BASE);
-    } else {
-      targetSpeedRef.current = 0;
-    }
+  // Track if we're on a touch device
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (isMobile) return;
+      const el = listRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const y = e.clientY - rect.top;
+      const h = rect.height;
+      const zone = h * SCROLL_ZONE_RATIO;
+
+      if (y < zone) {
+        const t = 1 - y / zone;
+        targetSpeedRef.current = -(
+          SCROLL_SPEED_BASE +
+          t * (SCROLL_SPEED_MAX - SCROLL_SPEED_BASE)
+        );
+      } else if (y > h - zone) {
+        const t = (y - (h - zone)) / zone;
+        targetSpeedRef.current =
+          SCROLL_SPEED_BASE + t * (SCROLL_SPEED_MAX - SCROLL_SPEED_BASE);
+      } else {
+        targetSpeedRef.current = 0;
+      }
+    },
+    [isMobile]
+  );
 
   const handleMouseLeave = useCallback(() => {
     targetSpeedRef.current = 0;
   }, []);
 
-  const toggleSidebar = useCallback(() => {
-    setSidebarMode((prev) => (prev === "expanded" ? "collapsed" : "expanded"));
-  }, []);
-
   useEffect(() => {
+    if (isMobile) return;
     const el = listRef.current;
     if (!el) return;
 
     const tick = (now: number) => {
       if (lastTimeRef.current === 0) lastTimeRef.current = now;
-      const dt = Math.min(Math.max((now - lastTimeRef.current) / 16.66, 0), 2);
+      const dt = Math.min(
+        Math.max((now - lastTimeRef.current) / 16.66, 0),
+        2
+      );
       lastTimeRef.current = now;
 
       const target = targetSpeedRef.current;
@@ -144,98 +174,319 @@ export function EssaysSection({ onBack }: { onBack: () => void }) {
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+  }, [isMobile]);
 
+  // Mobile: stacked view (list OR detail)
+  if (isMobile) {
+    return (
+      <div className="flex min-h-screen w-full flex-col bg-transparent">
+        <AnimatePresence mode="wait">
+          {selectedEssay ? (
+            <motion.div
+              key={`essay-${selectedEssay.id}`}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 40 }}
+              transition={{
+                type: "spring",
+                bounce: 0.08,
+                stiffness: 320,
+                damping: 32,
+              }}
+              className="flex min-h-screen flex-col"
+            >
+              {/* Mobile top bar */}
+              <div className="sticky top-0 z-20 flex items-center justify-between border-b border-foreground/10 bg-background/95 px-4 py-3 backdrop-blur-sm">
+                <button
+                  type="button"
+                  onClick={() => setSelectedEssay(null)}
+                  className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-foreground/60 transition-colors active:text-foreground/90"
+                >
+                  <ChevronLeft className="size-4 shrink-0" aria-hidden />
+                  <span>Essays</span>
+                </button>
+                <div className="flex items-center gap-1">
+                  <Type
+                    className="mr-1 size-3.5 shrink-0 text-foreground/50"
+                    aria-hidden
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setEssayFontSizeIndex((i) => (i > 0 ? i - 1 : i))
+                    }
+                    disabled={essayFontSizeIndex === 0}
+                    className="flex size-9 items-center justify-center text-foreground/70 transition-colors active:bg-foreground/10 disabled:opacity-40 disabled:pointer-events-none"
+                    aria-label="Decrease text size"
+                  >
+                    <Minus className="size-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setEssayFontSizeIndex((i) =>
+                        i < ESSAY_FONT_SIZES.length - 1 ? i + 1 : i
+                      )
+                    }
+                    disabled={
+                      essayFontSizeIndex === ESSAY_FONT_SIZES.length - 1
+                    }
+                    className="flex size-9 items-center justify-center text-foreground/70 transition-colors active:bg-foreground/10 disabled:opacity-40 disabled:pointer-events-none"
+                    aria-label="Increase text size"
+                  >
+                    <Plus className="size-4" />
+                  </button>
+                </div>
+              </div>
+              {/* Mobile essay content */}
+              <article className="flex-1 px-5 py-6">
+                <header className="mb-6">
+                  <h2 className="text-xl font-normal tracking-tight text-foreground/95">
+                    {selectedEssay.title}
+                  </h2>
+                  <p className="mt-2 text-xs font-medium uppercase tracking-widest text-foreground/45">
+                    {selectedEssay.date}
+                  </p>
+                </header>
+                <div
+                  className={`leading-relaxed text-foreground/80 ${ESSAY_FONT_SIZES[essayFontSizeIndex]}`}
+                >
+                  <p>
+                    Essay content would appear here. This is a placeholder for
+                    the full text of &ldquo;{selectedEssay.title}&rdquo; — you
+                    can replace this with real content or fetch it by essay id
+                    when you have a backend or markdown source.
+                  </p>
+                  <p className="mt-4">
+                    Tap another title to switch, or tap the back button to
+                    return to the list.
+                  </p>
+                </div>
+              </article>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="list"
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{
+                type: "spring",
+                bounce: 0.08,
+                stiffness: 320,
+                damping: 32,
+              }}
+              className="flex min-h-screen flex-col"
+            >
+              {/* Mobile list header */}
+              <div className="sticky top-0 z-20 flex items-center border-b border-foreground/10 bg-background/95 px-4 py-3 backdrop-blur-sm">
+                <button
+                  type="button"
+                  onClick={onBack}
+                  className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-foreground/60 transition-colors active:text-foreground/90"
+                >
+                  <ChevronLeft className="size-4 shrink-0" aria-hidden />
+                  <span>Back</span>
+                </button>
+              </div>
+              {/* Mobile essay list */}
+              <div className="flex-1 overflow-y-auto px-4 py-4">
+                <p className="mb-4 text-xs font-medium uppercase tracking-widest text-foreground/50">
+                  Essays
+                </p>
+                <ul className="flex flex-col gap-1">
+                  {FAKE_ESSAYS.map((essay) => {
+                    return (
+                      <li key={essay.id}>
+                        <button
+                          type="button"
+                          className="flex w-full items-baseline justify-between gap-3 py-3 text-left text-foreground/95 transition-colors active:text-[#ffaa00]"
+                          onClick={() => setSelectedEssay(essay)}
+                        >
+                          <span className="font-normal">{essay.title}</span>
+                          <span className="shrink-0 text-sm text-foreground/45">
+                            {essay.date}
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  // Desktop: sidebar + content layout
   return (
     <div className="flex min-h-screen w-full bg-transparent">
-      <motion.div
-        ref={listRef}
-        className="relative flex shrink-0 flex-col overflow-y-auto overflow-x-hidden border-r border-foreground/15 scrollbar-sidebar"
-        style={{ maxHeight: "100vh" }}
-        initial={false}
-        animate={{
-          width: sidebarMode === "expanded" ? "22rem" : "0rem",
-          minWidth: sidebarMode === "expanded" ? "22rem" : "0rem",
+      <div
+        style={{
+          maxHeight: "100vh",
+          width: sidebarCollapsed ? 4 : 352,
+          minWidth: sidebarCollapsed ? 4 : 352,
+          transition:
+            "width 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94), min-width 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         }}
-        transition={{ type: "spring", stiffness: 300, damping: 35 }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+        className="relative flex shrink-0 flex-col border-r border-foreground/15"
       >
-        <div className="flex min-h-0 flex-1 flex-col py-3 pl-2.5 pr-2">
-          <button
-            type="button"
-            onClick={onBack}
-            className="mb-3 flex items-center gap-1.5 text-left text-xs font-medium uppercase tracking-widest text-foreground/60 transition-colors hover:text-foreground/90"
-          >
-            <ChevronLeft className="size-3.5 shrink-0" aria-hidden />
-            Back
-          </button>
-          <p className="mb-3 text-xs font-medium uppercase tracking-widest text-foreground/50">
-            Essays
-          </p>
-          <ul className="flex flex-col gap-2 pb-6">
-            {FAKE_ESSAYS.map((essay) => (
-              <li key={essay.id} className="min-w-0">
-                <a
-                  href="#"
-                  role="button"
-                  className={`block no-underline transition-colors hover:text-foreground ${selectedEssay?.id === essay.id ? "font-medium text-foreground" : "text-foreground/95"}`}
-                  onMouseEnter={() => setHoveredEssay(essay)}
-                  onMouseLeave={() => setHoveredEssay(null)}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedEssay((prev) =>
-                      prev?.id === essay.id ? null : essay
-                    );
-                  }}
-                >
-                  <span className="font-normal">{essay.title}</span>
-                  {sidebarMode === "expanded" && (
-                    <span className="ml-2 text-foreground/45">
-                      {essay.date}
-                    </span>
-                  )}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </motion.div>
-      {/* Spacer per il pulsante toggle: fuori dalla sidebar così l’icona non viene tagliata */}
-      <div className="relative flex h-screen w-6 shrink-0 items-center">
+        {/* Toggle button */}
         <button
           type="button"
-          onClick={toggleSidebar}
-          className="absolute left-0 top-1/2 z-10 flex size-9 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-foreground/15 bg-background text-foreground/50 transition-colors hover:border-foreground/25 hover:bg-muted/50 hover:text-foreground/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          aria-label={
-            sidebarMode === "collapsed" ? "Expand sidebar" : "Collapse sidebar"
-          }
+          onClick={() => setSidebarCollapsed((c) => !c)}
+          className="absolute right-0 top-1/2 z-20 flex size-7 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-foreground/15 bg-background text-foreground/40 shadow-sm transition-colors hover:text-foreground"
+          aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
-          {sidebarMode === "collapsed" ? (
-            <ChevronRight className="size-4" aria-hidden />
+          {sidebarCollapsed ? (
+            <ChevronRight className="size-3.5" aria-hidden />
           ) : (
-            <ChevronLeft className="size-4" aria-hidden />
+            <ChevronLeft className="size-3.5" aria-hidden />
           )}
         </button>
+        {/* Inner wrapper clips content during animation */}
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          <div
+            ref={listRef}
+            className="flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-3 pl-2.5 pr-2"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="mb-3 flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={onBack}
+                className="flex min-w-0 flex-1 items-center gap-1.5 text-left text-xs font-medium uppercase tracking-widest text-foreground/60 transition-colors hover:text-foreground/90"
+              >
+                <ChevronLeft className="size-3.5 shrink-0" aria-hidden />
+                {!sidebarCollapsed && <span>Back</span>}
+              </button>
+            </div>
+            {!sidebarCollapsed && (
+              <>
+                <p className="mb-3 text-xs font-medium uppercase tracking-widest text-foreground/50">
+                  Essays
+                </p>
+                <ul className="flex flex-col gap-2 pb-6">
+                  {FAKE_ESSAYS.map((essay) => {
+                    const isSelected = selectedEssay?.id === essay.id;
+                    const isHovered = hoveredEssay?.id === essay.id;
+                    const isHighlighted = isSelected || isHovered;
+                    return (
+                      <li key={essay.id} className="min-w-0">
+                        <a
+                          href="#"
+                          role="button"
+                          className={`block no-underline transition-colors ${
+                            isHighlighted
+                              ? "font-medium text-[#ffaa00]"
+                              : "text-foreground/95 hover:text-[#ffaa00]"
+                          }`}
+                          onMouseEnter={() => setHoveredEssay(essay)}
+                          onMouseLeave={() => setHoveredEssay(null)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedEssay((prev) =>
+                              prev?.id === essay.id ? null : essay
+                            );
+                          }}
+                        >
+                          <span className="font-normal">{essay.title}</span>
+                          <span className="ml-2 text-foreground/45">
+                            {essay.date}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
+          </div>
+        </div>
       </div>
       <div className="relative min-w-0 flex-1">
+        {/* Control bar: visible only when an essay is open */}
+        <AnimatePresence>
+          {displayEssay && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="absolute right-4 top-4 z-20 flex items-center gap-2 rounded-md border border-foreground/15 bg-background/95 px-3 py-2 shadow-sm backdrop-blur-sm"
+              aria-label="Essay text controls"
+            >
+              <Type
+                className="size-4 shrink-0 text-foreground/50"
+                aria-hidden
+              />
+              <span className="text-xs font-medium uppercase tracking-wider text-foreground/60">
+                Text
+              </span>
+              <div className="flex items-center gap-0.5">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setEssayFontSizeIndex((i) => (i > 0 ? i - 1 : i))
+                  }
+                  disabled={essayFontSizeIndex === 0}
+                  className="flex size-8 items-center justify-center rounded text-foreground/70 transition-colors hover:bg-foreground/10 hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
+                  aria-label="Decrease text size"
+                >
+                  <Minus className="size-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setEssayFontSizeIndex((i) =>
+                      i < ESSAY_FONT_SIZES.length - 1 ? i + 1 : i
+                    )
+                  }
+                  disabled={essayFontSizeIndex === ESSAY_FONT_SIZES.length - 1}
+                  className="flex size-8 items-center justify-center rounded text-foreground/70 transition-colors hover:bg-foreground/10 hover:text-foreground disabled:opacity-40 disabled:pointer-events-none"
+                  aria-label="Increase text size"
+                >
+                  <Plus className="size-4" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <AnimatePresence mode="wait">
           {displayEssay ? (
             <motion.article
               key={displayEssay.id}
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 12 }}
+              initial={{
+                opacity: 0,
+                x: -16,
+                clipPath: "inset(0 100% 0 0)",
+                filter: "blur(6px)",
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+                clipPath: "inset(0 0 0 0)",
+                filter: "blur(0px)",
+              }}
+              exit={{
+                opacity: 0,
+                x: 12,
+                clipPath: "inset(0 0 0 100%)",
+                filter: "blur(4px)",
+              }}
               transition={{
                 type: "spring",
-                bounce: 0.15,
-                stiffness: 400,
-                damping: 30,
+                bounce: 0.08,
+                stiffness: 320,
+                damping: 32,
               }}
               className="absolute inset-0 overflow-y-auto py-8 pl-6 pr-10"
-              style={{ willChange: "transform" }}
+              style={{ willChange: "transform, opacity, filter, clip-path" }}
             >
-              <header className="mb-8">
+              <header className="mb-8 pr-48">
                 <h2 className="text-xl font-normal tracking-tight text-foreground/95">
                   {displayEssay.title}
                 </h2>
@@ -243,7 +494,9 @@ export function EssaysSection({ onBack }: { onBack: () => void }) {
                   {displayEssay.date}
                 </p>
               </header>
-              <div className="prose prose-neutral max-w-none text-sm leading-relaxed text-foreground/80">
+              <div
+                className={`prose prose-neutral max-w-none leading-relaxed text-foreground/80 ${ESSAY_FONT_SIZES[essayFontSizeIndex]}`}
+              >
                 <p>
                   Essay content would appear here. This is a placeholder for the
                   full text of &ldquo;{displayEssay.title}&rdquo; — you can

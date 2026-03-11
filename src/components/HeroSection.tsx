@@ -31,7 +31,7 @@ export function HeroSection() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
   const ctaRef = useRef<HTMLDivElement>(null);
-  const { x: magneticX, y: magneticY } = useMagneticPull(ctaRef, 0.2);
+  const { x: magneticX, y: magneticY } = useMagneticPull(ctaRef, 0.35);
 
   return (
     <section

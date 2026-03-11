@@ -16,7 +16,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.35.1",
     "lucide-react": "^0.577.0",
-    "motion-plus": "https://api.motion.dev/registry.tgz?package=motion-plus&version=latest&token=c4a20c289314ef168db67c62ca6e30f5e3799c0e4902ca234b29765fdb2bf5a4",
+    "motion-plus": "https://api.motion.dev/registry.tgz?package=motion-plus&version=2.11.2&token=2145329210898e40605cfa007c59055ba655637d15bbefa9f785dcfec2bf1d02",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -29,8 +29,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "prettier": "^3.4.2",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "prettier": "^3.4.2"
+    "typescript": "^5"
   }
 }
