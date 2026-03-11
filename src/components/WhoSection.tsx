@@ -354,19 +354,21 @@ export function WhoSection({ onBack }: { onBack: () => void }) {
               </motion.div>
 
               <div className="text-sm leading-[1.9] text-[#c8d6e5]/85 sm:text-base sm:leading-[2]">
-                {displayedBio.split("\n").map((line, i) => (
-                  <p key={i} className={line === "" ? "h-4" : "mb-3"}>
-                    {line}
-                  </p>
-                ))}
-                {!bioComplete && (
-                  <span
-                    className="inline-block text-[#64b5f6]"
-                    style={{ opacity: cursorVisible ? 1 : 0 }}
-                  >
-                    ▌
-                  </span>
-                )}
+                {(() => {
+                  const paragraphs = displayedBio.split("\n");
+                  const lastIdx = paragraphs.length - 1;
+                  return paragraphs.map((line, i) => (
+                    <p key={i} className={line === "" ? "h-4" : "mb-3"}>
+                      {line}
+                      {i === lastIdx && !bioComplete && (
+                        <span
+                          className="inline-block h-[1.1em] w-[0.55em] translate-y-[0.15em] bg-[#64b5f6]"
+                          style={{ opacity: cursorVisible ? 1 : 0 }}
+                        />
+                      )}
+                    </p>
+                  ));
+                })()}
               </div>
 
               <AnimatePresence>
