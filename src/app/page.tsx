@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+
+const LOCATIONS = ["Bologna - Italy", "San Francisco - USA"];
 import { usePageHover } from "@/context/PageHoverContext";
 import { EssaysSection } from "@/components/EssaysSection";
 import { Dashboard } from "@/components/Dashboard";
@@ -101,12 +103,20 @@ export default function Home() {
   const [view, setView] = useState<View>("hero");
   const [wordLayouts, setWordLayouts] = useState<WordLayout[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [locationIndex, setLocationIndex] = useState(0);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLocationIndex((prev) => (prev + 1) % LOCATIONS.length);
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleMouseEnter = useCallback(() => {
@@ -155,6 +165,52 @@ export default function Home() {
             }}
             style={{ transformOrigin: "50% 50%" }}
           >
+            {/* Name — top right */}
+            <motion.span
+              className={`absolute inset-x-0 top-4 z-20 text-center whitespace-nowrap text-[11px] font-normal tracking-wide sm:top-6 sm:text-xs transition-colors duration-300 ${
+                isHoveringButton ? "text-[#0a0a0a]" : "text-foreground/50"
+              }`}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              Greg Patini
+            </motion.span>
+
+            {/* Location — bottom right */}
+            <motion.div
+              className={`absolute bottom-4 right-4 z-20 sm:bottom-6 sm:right-8 transition-colors duration-300 ${
+                isHoveringButton ? "text-[#0a0a0a]" : "text-foreground/50"
+              }`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <span className={`flex items-center justify-end gap-1 whitespace-nowrap text-right text-[9px] font-normal uppercase tracking-[0.15em] sm:text-[10px] transition-colors duration-300 ${
+                isHoveringButton ? "text-[#0a0a0a]/40" : "text-foreground/30"
+              }`}>
+                Location
+                <span className="relative flex size-1.5">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-400 opacity-100 duration-1000" />
+                  <span className="relative inline-flex size-1.5 rounded-full bg-green-500" />
+                </span>
+              </span>
+              <div className="relative mt-0.5 h-5 overflow-hidden sm:h-5">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={LOCATIONS[locationIndex]}
+                    className="block whitespace-nowrap text-right text-[11px] font-normal leading-5 sm:text-xs sm:leading-5"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  >
+                    {LOCATIONS[locationIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+            </motion.div>
+
             <p
               className={`relative z-10 max-w-sm text-center text-base font-normal tracking-normal transition-colors duration-300 sm:max-w-none sm:text-lg ${
                 isHoveringButton ? "text-[#0a0a0a]" : "text-foreground/90"

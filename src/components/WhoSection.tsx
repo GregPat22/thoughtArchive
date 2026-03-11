@@ -138,7 +138,11 @@ export function WhoSection({ onBack }: { onBack: () => void }) {
     setDisplayedBio("");
     setBioComplete(false);
 
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout>;
+
     const tick = () => {
+      if (cancelled) return;
       const idx = bioIndexRef.current;
       if (idx >= BIO_TEXT.length) {
         setBioComplete(true);
@@ -149,10 +153,13 @@ export function WhoSection({ onBack }: { onBack: () => void }) {
       bioIndexRef.current = idx + chunk;
       setDisplayedBio(BIO_TEXT.slice(0, bioIndexRef.current));
       const delay = ch === "\n" ? 120 : ch === "." ? 80 : 18 + Math.random() * 14;
-      setTimeout(tick, delay);
+      timeoutId = setTimeout(tick, delay);
     };
-    const start = setTimeout(tick, 400);
-    return () => clearTimeout(start);
+    timeoutId = setTimeout(tick, 400);
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
   }, [showBio]);
 
   const handleSubmit = useCallback(() => {

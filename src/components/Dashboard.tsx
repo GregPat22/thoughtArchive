@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronLeft, BookOpen, Layers, Terminal } from "lucide-react";
+import { ChevronLeft, BookOpen, Layers, Terminal, AtSign } from "lucide-react";
 import { GeistMono } from "geist/font/mono";
 
 const containerVariants = {
@@ -49,71 +49,110 @@ export function Dashboard({ onBack, onEssays, onWho }: DashboardProps) {
       {/* Cards grid */}
       <div className="flex flex-1 items-center justify-center px-4 py-12 sm:px-6">
         <motion.div
-          className="flex w-full max-w-4xl flex-col gap-5"
+          className="grid w-full max-w-4xl grid-cols-1 gap-5 md:grid-cols-12"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          {/* Top row: Essays + Archive */}
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-12">
-            {/* Essays card — spans 7 cols */}
-            <motion.button
-              type="button"
-              onClick={onEssays}
-              variants={cardVariants}
-              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-              whileTap={{ scale: 0.98 }}
-              className="group relative flex flex-col justify-between overflow-hidden border border-foreground/10 bg-foreground/[0.03] p-6 text-left transition-colors hover:border-[#ffaa00]/40 hover:bg-foreground/[0.06] md:col-span-7 md:min-h-[280px] md:p-8"
-            >
-              <div>
-                <BookOpen
-                  className="mb-4 size-5 text-foreground/40 transition-colors group-hover:text-[#ffaa00]"
-                  aria-hidden
-                />
-                <h2 className="text-lg font-normal tracking-tight text-foreground/90 sm:text-xl">
-                  Essays
-                </h2>
-                <p className="mt-2 max-w-xs text-sm leading-relaxed text-foreground/50">
-                  Thoughts on silence, tools, constraints, and everything in
-                  between.
-                </p>
-              </div>
-              <span className="mt-6 text-xs font-medium uppercase tracking-widest text-foreground/30 transition-colors group-hover:text-[#ffaa00]/70">
-                Read &rarr;
-              </span>
-            </motion.button>
+          {/* Contacts card — tall vertical, left column */}
+          <motion.div
+            variants={cardVariants}
+            className="order-4 group relative flex flex-col justify-between overflow-hidden border border-foreground/10 bg-foreground/[0.03] p-6 transition-colors hover:border-foreground/20 hover:bg-foreground/[0.06] md:order-none md:col-span-3 md:row-span-2 md:p-8"
+          >
+            <div>
+              <AtSign
+                className="mb-4 size-5 text-foreground/40"
+                aria-hidden
+              />
+              <h2 className="text-lg font-normal tracking-tight text-foreground/90 sm:text-xl">
+                Contacts
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/50">
+                Find me elsewhere.
+              </p>
+            </div>
 
-            {/* Archive card — spans 5 cols */}
-            <motion.div
-              variants={cardVariants}
-              className="relative flex flex-col justify-between overflow-hidden border border-foreground/10 bg-foreground/[0.03] p-6 md:col-span-5 md:min-h-[280px] md:p-8"
-            >
-              <div>
-                <Layers
-                  className="mb-4 size-5 text-foreground/40"
-                  aria-hidden
-                />
-                <h2 className="text-lg font-normal tracking-tight text-foreground/90 sm:text-xl">
-                  Archive
-                </h2>
-                <p className="mt-2 max-w-xs text-sm leading-relaxed text-foreground/50">
-                  Something new is taking shape here.
-                </p>
-              </div>
-              <span className="mt-6 text-xs font-medium uppercase tracking-widest text-foreground/20">
-                Coming soon
-              </span>
-            </motion.div>
-          </div>
+            <div className="mt-6 flex flex-row gap-4">
+              <a
+                href="https://x.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-sm text-foreground/50 transition-colors hover:text-foreground/90"
+              >
+                <svg className="size-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-sm text-foreground/50 transition-colors hover:text-foreground/90"
+              >
+                <svg className="size-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                </svg>
+              </a>
+            </div>
+          </motion.div>
 
-          {/* Bottom row: Who I am — full width, wide/short */}
+          {/* Essays card — top right area */}
+          <motion.button
+            type="button"
+            onClick={onEssays}
+            variants={cardVariants}
+            whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.98 }}
+            className="order-2 group relative flex flex-col justify-between overflow-hidden border border-foreground/10 bg-foreground/[0.03] p-6 text-left transition-colors hover:border-[#ffaa00]/40 hover:bg-foreground/[0.06] md:order-none md:col-span-5 md:min-h-[220px] md:p-8"
+          >
+            <div>
+              <BookOpen
+                className="mb-4 size-5 text-foreground/40 transition-colors group-hover:text-[#ffaa00]"
+                aria-hidden
+              />
+              <h2 className="text-lg font-normal tracking-tight text-foreground/90 sm:text-xl">
+                Essays
+              </h2>
+              <p className="mt-2 max-w-xs text-sm leading-relaxed text-foreground/50">
+                Thoughts on silence, tools, constraints, and everything in
+                between.
+              </p>
+            </div>
+            <span className="mt-6 text-xs font-medium uppercase tracking-widest text-foreground/30 transition-colors group-hover:text-[#ffaa00]/70">
+              Read &rarr;
+            </span>
+          </motion.button>
+
+          {/* Archive card — top right */}
+          <motion.div
+            variants={cardVariants}
+            className="order-3 relative flex flex-col justify-between overflow-hidden border border-foreground/10 bg-foreground/[0.03] p-6 md:order-none md:col-span-4 md:min-h-[220px] md:p-8"
+          >
+            <div>
+              <Layers
+                className="mb-4 size-5 text-foreground/40"
+                aria-hidden
+              />
+              <h2 className="text-lg font-normal tracking-tight text-foreground/90 sm:text-xl">
+                Archive
+              </h2>
+              <p className="mt-2 max-w-xs text-sm leading-relaxed text-foreground/50">
+                Something new is taking shape here.
+              </p>
+            </div>
+            <span className="mt-6 text-xs font-medium uppercase tracking-widest text-foreground/20">
+              Coming soon
+            </span>
+          </motion.div>
+
+          {/* Who I am — bottom right, spanning remaining cols */}
           <motion.button
             type="button"
             onClick={onWho}
             variants={cardVariants}
             whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
             whileTap={{ scale: 0.99 }}
-            className={`${GeistMono.className} group relative flex items-center justify-between overflow-hidden border border-foreground/10 bg-[#0a1628]/60 p-6 text-left transition-colors hover:border-[#64b5f6]/30 hover:bg-[#0a1628]/80 md:p-8`}
+            className={`${GeistMono.className} order-1 group relative flex items-center justify-between overflow-hidden border border-foreground/10 bg-[#0a1628]/60 p-6 text-left transition-colors hover:border-[#64b5f6]/30 hover:bg-[#0a1628]/80 md:order-none md:col-span-9 md:p-8`}
           >
             <div className="flex items-center gap-5">
               <Terminal
