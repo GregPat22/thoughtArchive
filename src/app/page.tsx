@@ -4,6 +4,8 @@ import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePageHover } from "@/context/PageHoverContext";
 import { EssaysSection } from "@/components/EssaysSection";
+import { Dashboard } from "@/components/Dashboard";
+import { WhoSection } from "@/components/WhoSection";
 
 const borderFillTransition = {
   duration: 0.26,
@@ -92,7 +94,7 @@ function generateRandomLayouts(mobile: boolean): WordLayout[] {
   });
 }
 
-type View = "hero" | "essays";
+type View = "hero" | "dashboard" | "essays" | "who";
 
 export default function Home() {
   const { setHoveringButton, isHoveringButton } = usePageHover();
@@ -122,15 +124,17 @@ export default function Home() {
       // Auto-navigate after a brief reveal
       setTimeout(() => {
         setHoveringButton(false);
-        setView("essays");
+        setView("dashboard");
       }, 600);
     }
   }, [isMobile, isHoveringButton, setHoveringButton]);
 
-  const goToEssays = () => {
+  const goToDashboard = () => {
     setHoveringButton(false);
-    setView("essays");
+    setView("dashboard");
   };
+  const goToEssays = () => setView("essays");
+  const goToWho = () => setView("who");
   const goToHero = () => setView("hero");
 
   return (
@@ -255,7 +259,7 @@ export default function Home() {
 
                   <motion.button
                     type="button"
-                    onClick={goToEssays}
+                    onClick={goToDashboard}
                     className={`relative z-10 inline-block cursor-pointer border-0 bg-foreground/5 px-6 py-3 text-sm font-medium no-underline outline-none transition-colors hover:bg-foreground/10 focus-visible:ring-2 focus-visible:ring-[#ffaa00] focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                       isHoveringButton
                         ? "text-[#0a0a0a]"
@@ -291,7 +295,22 @@ export default function Home() {
               )}
             </motion.div>
           </motion.div>
-        ) : (
+        ) : view === "dashboard" ? (
+          <motion.div
+            key="dashboard"
+            className="min-h-screen w-full"
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 0.45,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            style={{ transformOrigin: "50% 50%" }}
+          >
+            <Dashboard onBack={goToHero} onEssays={goToEssays} onWho={goToWho} />
+          </motion.div>
+        ) : view === "essays" ? (
           <motion.div
             key="essays"
             className="min-h-screen w-full"
@@ -304,7 +323,22 @@ export default function Home() {
             }}
             style={{ transformOrigin: "50% 50%" }}
           >
-            <EssaysSection onBack={goToHero} />
+            <EssaysSection onBack={goToDashboard} />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="who"
+            className="min-h-screen w-full"
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 0.45,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            style={{ transformOrigin: "50% 50%" }}
+          >
+            <WhoSection onBack={goToDashboard} />
           </motion.div>
         )}
       </AnimatePresence>

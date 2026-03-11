@@ -15,6 +15,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.35.1",
+    "geist": "^1.7.0",
     "lucide-react": "^0.577.0",
     "motion-plus": "https://api.motion.dev/registry.tgz?package=motion-plus&version=2.11.2&token=2145329210898e40605cfa007c59055ba655637d15bbefa9f785dcfec2bf1d02",
     "next": "16.1.6",

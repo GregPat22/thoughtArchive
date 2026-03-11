@@ -198,6 +198,13 @@ body {
   background: oklch(0.6 0 0 / 0.5);
 }
 
+/* Pointer cursor on all interactive elements */
+button,
+a,
+[role="button"] {
+  cursor: pointer;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
