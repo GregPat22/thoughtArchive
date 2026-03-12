@@ -93,7 +93,7 @@ export function Dashboard({ onBack, onWho }: DashboardProps) {
                 </svg>
               </a>
               <a
-                href="https://www.linkedin.com/in/greg-patini-b318223b6"
+                href="https://www.linkedin.com/in/gregpatini"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center text-foreground/50 transition-colors hover:text-[#ffe066]"

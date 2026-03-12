@@ -6,7 +6,7 @@ import { AnimateView } from "motion-plus/animate-view";
 
 const links = [
   { href: "https://github.com", icon: Github, label: "GitHub" },
-  { href: "https://linkedin.com", icon: Linkedin, label: "LinkedIn" },
+  { href: "https://www.linkedin.com/in/gregpatini", icon: Linkedin, label: "LinkedIn" },
   { href: "mailto:hello@example.com", icon: Mail, label: "Email" },
 ];
 

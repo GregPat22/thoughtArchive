@@ -323,11 +323,13 @@ function BioContent({ onComplete }: { onComplete: () => void }) {
 
 // ── Greg typewriter ──
 
-const GREG_TEXT = `testo di prova`;
+const GREG_TEXT = `Engineer`;
+const GREG_FOLLOWUP = `The rest isn't written here. If you want to know more, reach out — that's how it works.`;
 
 function GregTypewriter() {
   const [charIdx, setCharIdx] = useState(0);
   const [cursorOn, setCursorOn] = useState(true);
+  const [showFollowup, setShowFollowup] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setCursorOn((v) => !v), 530);
@@ -335,7 +337,10 @@ function GregTypewriter() {
   }, []);
 
   useEffect(() => {
-    if (charIdx >= GREG_TEXT.length) return;
+    if (charIdx >= GREG_TEXT.length) {
+      const id = setTimeout(() => setShowFollowup(true), 800);
+      return () => clearTimeout(id);
+    }
 
     const ch = GREG_TEXT[charIdx];
     const speed =
@@ -362,19 +367,52 @@ function GregTypewriter() {
   }, [charIdx]);
 
   const displayed = GREG_TEXT.slice(0, charIdx);
-  const lines = displayed.split("\n");
   const done = charIdx >= GREG_TEXT.length;
 
   return (
     <div className="text-sm leading-[1.9] text-[#c8d6e5]/85 sm:text-base sm:leading-[2]">
-      {lines.map((line, i) => (
-        <p key={i} className={line === "" ? "h-4" : "mb-3"}>
-          {line}
-          {i === lines.length - 1 && !done && (
-            <TerminalCursor visible={cursorOn} />
-          )}
-        </p>
-      ))}
+      <p className="mb-3">
+        {displayed}
+        {!done && <TerminalCursor visible={cursorOn} />}
+      </p>
+      {showFollowup && (
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mt-6 flex flex-col gap-3"
+        >
+          <p className="text-xs leading-relaxed text-[#64b5f6]/35">
+            {GREG_FOLLOWUP}
+          </p>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://www.linkedin.com/in/gregpatini"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-medium tracking-widest text-[#64b5f6]/50 transition-colors hover:text-[#64b5f6]/90"
+            >
+              <span className="text-[#64b5f6]/30">→</span> LinkedIn
+            </a>
+            <a
+              href="https://www.instagram.com/inartenino/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-medium tracking-widest text-[#64b5f6]/50 transition-colors hover:text-[#64b5f6]/90"
+            >
+              <span className="text-[#64b5f6]/30">→</span> Instagram
+            </a>
+            <a
+              href="https://x.com/gregpatini"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-medium tracking-widest text-[#64b5f6]/50 transition-colors hover:text-[#64b5f6]/90"
+            >
+              <span className="text-[#64b5f6]/30">→</span> X
+            </a>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }
