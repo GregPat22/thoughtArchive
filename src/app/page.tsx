@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AsciiRain } from "@/components/AsciiRain";
+import { AsciiSun } from "@/components/AsciiSun";
 
 const LOCATIONS = ["Bologna - Italy", "San Francisco - USA"];
 import { usePageHover } from "@/context/PageHoverContext";
@@ -104,6 +106,10 @@ export default function Home() {
   const [wordLayouts, setWordLayouts] = useState<WordLayout[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [locationIndex, setLocationIndex] = useState(0);
+  const [isIdle, setIsIdle] = useState(false);
+  const [showSun, setShowSun] = useState(false);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -118,6 +124,43 @@ export default function Home() {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  // Idle detection — start rain after 5s of no interaction on hero view
+  useEffect(() => {
+    if (view !== "hero") {
+      setIsIdle(false);
+      return;
+    }
+
+    const resetIdle = () => {
+      setIsIdle(false);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = setTimeout(() => setIsIdle(true), 5000);
+    };
+
+    const events = ["mousemove", "mousedown", "keydown", "scroll", "touchstart"] as const;
+    events.forEach((e) => window.addEventListener(e, resetIdle));
+    // Start the initial timer
+    idleTimerRef.current = setTimeout(() => setIsIdle(true), 5000);
+
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, resetIdle));
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, [view]);
+
+  // Sun timer — show sun after 2s continuous hover on CTA button
+  useEffect(() => {
+    if (isHoveringButton && view === "hero") {
+      hoverTimerRef.current = setTimeout(() => setShowSun(true), 2000);
+    } else {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+      setShowSun(false);
+    }
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    };
+  }, [isHoveringButton, view]);
 
   const handleMouseEnter = useCallback(() => {
     if (isMobile) return;
@@ -164,6 +207,12 @@ export default function Home() {
             }}
             style={{ transformOrigin: "50% 50%" }}
           >
+            {/* ASCII rain on idle */}
+            <AsciiRain active={isIdle && !isHoveringButton} />
+
+            {/* ASCII sun — top right, after 10s hover */}
+            <AsciiSun visible={showSun} />
+
             {/* Name — top right */}
             <motion.span
               className={`absolute inset-x-0 top-4 z-20 text-center whitespace-nowrap text-base font-normal tracking-wide sm:top-6 sm:text-lg transition-colors duration-300 ${

@@ -323,15 +323,7 @@ function BioContent({ onComplete }: { onComplete: () => void }) {
 
 // ── Greg typewriter ──
 
-const GREG_TEXT = `Greg Patini. 23. Born in Italy, still here.
-
-I study economics and management, but most of what I know I taught myself — design, code, systems thinking. I like building things from zero.
-
-I read a lot. I think a lot. Sometimes I write about it. Most of the time I just keep building.
-
-I care about craft. About the invisible decisions that make something feel right. About not shipping things I wouldn't use myself.
-
-I don't have a grand thesis about who I am. I just keep showing up, and the sum keeps running.`;
+const GREG_TEXT = `testo di prova`;
 
 function GregTypewriter() {
   const [charIdx, setCharIdx] = useState(0);
@@ -479,6 +471,7 @@ export function WhoSection({
   const [showBio, setShowBio] = useState(false);
   const [bioComplete, setBioComplete] = useState(false);
   const [gregStarted, setGregStarted] = useState(false);
+  const [gregFocused, setGregFocused] = useState(false);
   const [flameFrame, setFlameFrame] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const gregInputRef = useRef<HTMLInputElement>(null);
@@ -543,7 +536,8 @@ export function WhoSection({
 
   const handleContainerClick = () => {
     if (phase === "terminal") inputRef.current?.focus();
-    if (showBio) gregInputRef.current?.focus();
+    // Clicking outside the greg bar blurs it (cursor disappears)
+    if (showBio && gregFocused) gregInputRef.current?.blur();
   };
 
   return (
@@ -746,7 +740,18 @@ export function WhoSection({
                       <span className="text-[#64b5f6]/50">/greg</span>
                     </p>
 
-                    <div className="flex w-full items-center gap-2 border border-[#64b5f6]/15 bg-[#0a1628]/80 px-4 py-3 backdrop-blur-sm sm:px-5 sm:py-4">
+                    <div
+                      className={`flex w-full cursor-text items-center gap-2 border bg-[#0a1628]/80 px-4 py-3 backdrop-blur-sm transition-colors sm:px-5 sm:py-4 ${
+                        gregFocused
+                          ? "border-[#64b5f6]/30"
+                          : "border-[#64b5f6]/15"
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setGregFocused(true);
+                        setTimeout(() => gregInputRef.current?.focus(), 0);
+                      }}
+                    >
                       <span className="select-none text-sm text-[#64b5f6]/50 sm:text-base">
                         $
                       </span>
@@ -770,16 +775,18 @@ export function WhoSection({
                                   handleGregSubmit();
                                 }
                               }}
+                              onFocus={() => setGregFocused(true)}
+                              onBlur={() => setGregFocused(false)}
                               className="w-full bg-transparent text-sm text-[#e0e0e0] caret-transparent outline-none placeholder:text-[#64b5f6]/20 sm:text-base"
                               placeholder="/greg"
                               autoComplete="off"
                               spellCheck={false}
                             />
                             <span
-                              className="pointer-events-none absolute top-0 text-sm text-[#64b5f6] sm:text-base"
+                              className="pointer-events-none absolute top-0 text-sm text-[#64b5f6] sm:text-base transition-opacity"
                               style={{
                                 left: `${gregInputValue.length}ch`,
-                                opacity: cursorVisible ? 1 : 0,
+                                opacity: gregFocused && cursorVisible ? 1 : 0,
                               }}
                             >
                               ▌
