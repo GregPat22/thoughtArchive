@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronLeft, BookOpen, Layers, Terminal, AtSign } from "lucide-react";
+import Link from "next/link";
+import { ChevronLeft, BookOpen, Layers, Terminal, AtSign, Heart } from "lucide-react";
 import { GeistMono } from "geist/font/mono";
 
 const containerVariants = {
@@ -74,7 +75,7 @@ export function Dashboard({ onBack, onEssays, onWho }: DashboardProps) {
 
             <div className="mt-6 flex flex-row gap-4">
               <a
-                href="https://x.com"
+                href="https://x.com/gregpatini"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-sm text-foreground/50 transition-colors hover:text-foreground/90"
@@ -84,7 +85,7 @@ export function Dashboard({ onBack, onEssays, onWho }: DashboardProps) {
                 </svg>
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/inartenino/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-sm text-foreground/50 transition-colors hover:text-foreground/90"
@@ -143,6 +144,34 @@ export function Dashboard({ onBack, onEssays, onWho }: DashboardProps) {
             <span className="mt-6 text-xs font-medium uppercase tracking-widest text-foreground/20">
               Coming soon
             </span>
+          </motion.div>
+
+          {/* Fan page card — enjoy, pink theme */}
+          <motion.div
+            variants={cardVariants}
+            className="order-5 group relative flex flex-col justify-between overflow-hidden border border-foreground/10 bg-foreground/[0.03] p-6 transition-colors hover:border-pink-400/40 hover:bg-foreground/[0.06] md:order-none md:col-span-4 md:min-h-[220px] md:p-8"
+          >
+            <Link
+              href="/fan"
+              className="absolute inset-0 z-10 flex flex-col justify-between p-6 text-left md:p-8"
+              aria-label="Go to fan page — enjoy"
+            >
+              <div>
+                <Heart
+                  className="mb-4 size-5 text-foreground/40 transition-colors group-hover:text-pink-400"
+                  aria-hidden
+                />
+                <h2 className="text-lg font-normal tracking-tight text-foreground/90 sm:text-xl">
+                  Fan page
+                </h2>
+                <p className="mt-2 max-w-xs text-sm leading-relaxed text-foreground/50">
+                  A little corner to enjoy. Corgis, vibes, and good energy.
+                </p>
+              </div>
+              <span className="mt-6 text-xs font-medium uppercase tracking-widest text-foreground/30 transition-colors group-hover:text-pink-400/70">
+                Enjoy &rarr;
+              </span>
+            </Link>
           </motion.div>
 
           {/* Who I am — bottom right, spanning remaining cols */}
