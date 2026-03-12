@@ -10,7 +10,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "thoughtArchive",
+  title: "gregpatini",
   description: "The digital testimony of my existence.",
 };
 
