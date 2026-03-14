@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-8 px-6">
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-8 px-6">
       <p className="text-center text-foreground/90">
         More about you, coming soon.
       </p>

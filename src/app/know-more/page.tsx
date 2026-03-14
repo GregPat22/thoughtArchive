@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function KnowMore() {
-  return <main className="min-h-screen bg-background" />;
+  return <main className="min-h-dvh bg-background" />;
 }

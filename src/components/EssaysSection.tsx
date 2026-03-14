@@ -179,7 +179,7 @@ export function EssaysSection({ onBack }: { onBack: () => void }) {
   // Mobile: stacked view (list OR detail)
   if (isMobile) {
     return (
-      <div className="flex min-h-screen w-full flex-col bg-transparent">
+      <div className="flex min-h-dvh w-full flex-col bg-transparent">
         <AnimatePresence mode="wait">
           {selectedEssay ? (
             <motion.div
@@ -193,7 +193,7 @@ export function EssaysSection({ onBack }: { onBack: () => void }) {
                 stiffness: 320,
                 damping: 32,
               }}
-              className="flex min-h-screen flex-col"
+              className="flex min-h-dvh flex-col"
             >
               {/* Mobile top bar */}
               <div className="sticky top-0 z-20 flex items-center justify-between border-b border-foreground/10 bg-background/95 px-4 py-3 backdrop-blur-sm">
@@ -276,7 +276,7 @@ export function EssaysSection({ onBack }: { onBack: () => void }) {
                 stiffness: 320,
                 damping: 32,
               }}
-              className="flex min-h-screen flex-col"
+              className="flex min-h-dvh flex-col"
             >
               {/* Mobile list header */}
               <div className="sticky top-0 z-20 flex items-center border-b border-foreground/10 bg-background/95 px-4 py-3 backdrop-blur-sm">
@@ -322,10 +322,10 @@ export function EssaysSection({ onBack }: { onBack: () => void }) {
 
   // Desktop: sidebar + content layout
   return (
-    <div className="flex min-h-screen w-full bg-transparent">
+    <div className="flex min-h-dvh w-full bg-transparent">
       <div
         style={{
-          maxHeight: "100vh",
+          maxHeight: "100dvh",
           width: sidebarCollapsed ? 4 : 352,
           minWidth: sidebarCollapsed ? 4 : 352,
           transition:

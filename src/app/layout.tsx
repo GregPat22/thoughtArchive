@@ -83,7 +83,7 @@ export default function RootLayout({
       className={`${playfair.variable} dark`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-background text-foreground antialiased">
+      <body className="min-h-dvh bg-background text-foreground antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

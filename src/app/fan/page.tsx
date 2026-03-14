@@ -9,7 +9,7 @@ const CORGI_BG =
 
 export default function FanPage() {
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-linear-to-br from-pink-100 via-pink-50 to-rose-200 dark:from-pink-950/95 dark:via-rose-900/90 dark:to-pink-900/95">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-linear-to-br from-pink-100 via-pink-50 to-rose-200 dark:from-pink-950/95 dark:via-rose-900/90 dark:to-pink-900/95">
       {/* Corgi background — soft, decorative */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-25"
@@ -18,7 +18,7 @@ export default function FanPage() {
       />
       <div className="absolute inset-0 bg-linear-to-t from-pink-200/80 via-transparent to-pink-100/60 dark:from-pink-950/90 dark:via-transparent dark:to-pink-900/70" />
 
-      <div className="relative z-10 flex min-h-screen flex-col">
+      <div className="relative z-10 flex min-h-dvh flex-col">
         {/* Top bar */}
         <div className="sticky top-0 z-20 flex items-center border-b border-pink-300/30 bg-pink-50/80 px-4 py-3 backdrop-blur-sm dark:border-pink-500/20 dark:bg-pink-950/80 sm:px-6">
           <Link

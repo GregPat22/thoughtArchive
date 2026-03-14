@@ -9,17 +9,11 @@ function BodyContent({ children }: { children: React.ReactNode }) {
     <>
       <LinesBackground />
       <div
-        className={`relative z-10 min-h-screen transition-colors duration-300 ${
-          isHoveringButton ? "bg-white" : "bg-background"
+        className={`relative z-10 min-h-dvh transition-colors duration-300 ${
+          isHoveringButton ? "bg-white text-[#0a0a0a]" : "bg-background text-foreground"
         }`}
       >
-        <div
-          className={`min-h-screen transition-colors duration-300 ${
-            isHoveringButton ? "text-[#0a0a0a]" : "text-foreground"
-          }`}
-        >
-          {children}
-        </div>
+        {children}
       </div>
     </>
   );

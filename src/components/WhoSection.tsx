@@ -589,7 +589,7 @@ export function WhoSection({
 
   return (
     <div
-      className={`${GeistMono.className} relative flex min-h-screen w-full flex-col overflow-hidden`}
+      className={`${GeistMono.className} relative flex min-h-dvh w-full flex-col overflow-hidden`}
       style={{
         background:
           "linear-gradient(135deg, #0a1628 0%, #0d1f3c 40%, #0a1628 100%)",
