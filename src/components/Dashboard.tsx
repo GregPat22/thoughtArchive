@@ -34,7 +34,7 @@ export function Dashboard({ onBack, onWho }: DashboardProps) {
   return (
     <div className="flex min-h-dvh w-full flex-col">
       {/* Top bar */}
-      <div className="sticky top-0 z-20 flex items-center border-b border-foreground/10 bg-background/95 px-4 py-3 backdrop-blur-sm sm:px-6">
+      <div className="sticky top-0 z-20 flex items-center bg-background/95 px-4 py-3 backdrop-blur-sm sm:px-6">
         <button
           type="button"
           onClick={onBack}

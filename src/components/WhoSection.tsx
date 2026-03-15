@@ -616,7 +616,7 @@ export function WhoSection({
       />
 
       {/* Top bar */}
-      <div className="relative z-20 flex items-center border-b border-[#64b5f6]/10 px-4 py-3 sm:px-6">
+      <div className="relative z-20 flex items-center px-4 py-3 sm:px-6">
         <button
           type="button"
           onClick={onBack}

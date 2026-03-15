@@ -10,7 +10,7 @@ function BodyContent({ children }: { children: React.ReactNode }) {
       <LinesBackground />
       <div
         className={`relative z-10 min-h-dvh transition-colors duration-300 ${
-          isHoveringButton ? "bg-white text-[#0a0a0a]" : "bg-background text-foreground"
+          isHoveringButton ? "bg-[#fdfcdc] text-[#0a0a0a]" : "bg-background text-foreground"
         }`}
       >
         {children}

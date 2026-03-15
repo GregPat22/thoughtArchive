@@ -196,7 +196,7 @@ export function EssaysSection({ onBack }: { onBack: () => void }) {
               className="flex min-h-dvh flex-col"
             >
               {/* Mobile top bar */}
-              <div className="sticky top-0 z-20 flex items-center justify-between border-b border-foreground/10 bg-background/95 px-4 py-3 backdrop-blur-sm">
+              <div className="sticky top-0 z-20 flex items-center justify-between bg-background/95 px-4 py-3 backdrop-blur-sm">
                 <button
                   type="button"
                   onClick={() => setSelectedEssay(null)}
@@ -279,7 +279,7 @@ export function EssaysSection({ onBack }: { onBack: () => void }) {
               className="flex min-h-dvh flex-col"
             >
               {/* Mobile list header */}
-              <div className="sticky top-0 z-20 flex items-center border-b border-foreground/10 bg-background/95 px-4 py-3 backdrop-blur-sm">
+              <div className="sticky top-0 z-20 flex items-center bg-background/95 px-4 py-3 backdrop-blur-sm">
                 <button
                   type="button"
                   onClick={onBack}

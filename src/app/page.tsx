@@ -135,7 +135,7 @@ export default function Home() {
       setTimeout(() => {
         setHoveringButton(false);
         setView("dashboard");
-      }, 600);
+      }, 1600);
     }
   }, [isMobile, isHoveringButton, setHoveringButton]);
 
