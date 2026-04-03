@@ -1,18 +1,19 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { GeistMono } from "geist/font/mono";
 import { ChevronLeft } from "lucide-react";
+import { AccessLogoutButton } from "@/components/AccessLogoutButton";
 
 // ── Formula components ──
 
 function SummationSymbol() {
   return (
-    <span className="inline-flex flex-col items-center">
-      <span className="text-[14px] leading-none text-[#64b5f6]/70">n</span>
+      <span className="inline-flex flex-col items-center">
+      <span className="text-[14px] leading-none text-cyan-300/75">n</span>
       <span className="-my-[2px] text-[38px] leading-none">&#8721;</span>
-      <span className="mt-[7px] text-[14px] leading-none text-[#64b5f6]/70">
+      <span className="mt-[7px] text-[14px] leading-none text-cyan-300/75">
         i=1
       </span>
     </span>
@@ -23,8 +24,8 @@ function FormulaBlock({ children }: { children: React.ReactNode }) {
   return (
     <div className="my-6 flex justify-center sm:my-8">
       <div
-        className="inline-flex items-center gap-3 font-mono text-xl text-[#e0e0e0] sm:gap-4 sm:text-2xl"
-        style={{ textShadow: "0 0 20px rgba(100,181,246,0.15)" }}
+        className="inline-flex items-center gap-3 font-mono text-xl text-cyan-50/90 sm:gap-4 sm:text-2xl"
+        style={{ textShadow: "0 0 20px rgba(103,232,249,0.2)" }}
       >
         {children}
       </div>
@@ -47,15 +48,15 @@ function Formula2() {
   return (
     <FormulaBlock>
       <SummationSymbol />
-      <span className="text-[#e0e0e0]/40">(</span>
+      <span className="text-cyan-50/45">(</span>
       <span>
         A<sub className="text-[0.7em]">i</sub>
       </span>
-      <span className="text-[#64b5f6]/60">&middot;</span>
+      <span className="text-cyan-300/70">&middot;</span>
       <span>
         Im<sub className="text-[0.7em]">i</sub>
       </span>
-      <span className="text-[#e0e0e0]/40">)</span>
+      <span className="text-cyan-50/45">)</span>
     </FormulaBlock>
   );
 }
@@ -64,19 +65,19 @@ function Formula3() {
   return (
     <FormulaBlock>
       <SummationSymbol />
-      <span className="text-[#e0e0e0]/40">(</span>
+      <span className="text-cyan-50/45">(</span>
       <span>
         A<sub className="text-[0.7em]">i</sub>
       </span>
-      <span className="text-[#64b5f6]/60">&middot;</span>
+      <span className="text-cyan-300/70">&middot;</span>
       <span>
         Im<sub className="text-[0.7em]">i</sub>
       </span>
-      <span className="text-[#e0e0e0]/40">)</span>
-      <span className="mx-1 text-[#64b5f6]/60">=</span>
+      <span className="text-cyan-50/45">)</span>
+      <span className="mx-1 text-cyan-300/70">=</span>
       <span
-        className="text-[#64b5f6]"
-        style={{ textShadow: "0 0 12px rgba(100,181,246,0.3)" }}
+        className="text-cyan-200"
+        style={{ textShadow: "0 0 12px rgba(103,232,249,0.45)" }}
       >
         Id
       </span>
@@ -89,7 +90,7 @@ function Formula3() {
 function TerminalCursor({ visible }: { visible: boolean }) {
   return (
     <span
-      className="inline-block h-[1.1em] w-[0.55em] translate-y-[0.15em] bg-[#64b5f6]"
+      className="inline-block h-[1.1em] w-[0.55em] translate-y-[0.15em] bg-cyan-300"
       style={{ opacity: visible ? 1 : 0 }}
     />
   );
@@ -251,8 +252,8 @@ function BioContent({ onComplete }: { onComplete: () => void }) {
           if (!displayText && isCurrent) {
             return (
               <div key={i} className="relative my-6 sm:my-8">
-                <div className="border-l-2 border-[#64b5f6]/25 pl-5 sm:pl-6">
-                  <p className="font-serif text-base italic leading-relaxed text-[#64b5f6]/60 sm:text-lg">
+                <div className="border-l-2 border-cyan-300/35 pl-5 sm:pl-6">
+                  <p className="font-serif text-base italic leading-relaxed text-cyan-200/70 sm:text-lg">
                     &ldquo;
                     <TerminalCursor visible={cursorVisible} />
                   </p>
@@ -263,8 +264,8 @@ function BioContent({ onComplete }: { onComplete: () => void }) {
           const finished = !isCurrent || charIdx >= block.text.length;
           return (
             <div key={i} className="relative my-6 sm:my-8">
-              <div className="border-l-2 border-[#64b5f6]/25 pl-5 sm:pl-6">
-                <p className="font-serif text-base italic leading-relaxed text-[#64b5f6]/60 sm:text-lg">
+              <div className="border-l-2 border-cyan-300/35 pl-5 sm:pl-6">
+                <p className="font-serif text-base italic leading-relaxed text-cyan-200/70 sm:text-lg">
                   &ldquo;{displayText}
                   {finished && <>&rdquo;</>}
                   {isCurrent && !allDone && (
@@ -276,7 +277,7 @@ function BioContent({ onComplete }: { onComplete: () => void }) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.4 }}
-                    className="mt-2 text-xs tracking-widest text-[#64b5f6]/30"
+                    className="mt-2 text-xs tracking-widest text-cyan-300/45"
                   >
                     — {block.attribution}
                   </motion.p>
@@ -294,7 +295,7 @@ function BioContent({ onComplete }: { onComplete: () => void }) {
           return (
             <div
               key={i}
-              className="mb-3 text-sm leading-[1.9] text-[#c8d6e5]/85 sm:text-base sm:leading-[2]"
+              className="mb-3 text-sm leading-[1.9] text-cyan-50/85 sm:text-base sm:leading-loose"
             >
               <TerminalCursor visible={cursorVisible} />
             </div>
@@ -304,7 +305,7 @@ function BioContent({ onComplete }: { onComplete: () => void }) {
         return (
           <div
             key={i}
-            className="mb-3 text-sm leading-[1.9] text-[#c8d6e5]/85 sm:text-base sm:leading-[2]"
+            className="mb-3 text-sm leading-[1.9] text-cyan-50/85 sm:text-base sm:leading-loose"
           >
             {lines.map((line, li) => (
               <p key={li} className={line === "" ? "h-4" : ""}>
@@ -370,7 +371,7 @@ function GregTypewriter() {
   const done = charIdx >= GREG_TEXT.length;
 
   return (
-    <div className="text-sm leading-[1.9] text-[#c8d6e5]/85 sm:text-base sm:leading-[2]">
+    <div className="text-sm leading-[1.9] text-cyan-50/85 sm:text-base sm:leading-loose">
       <p className="mb-3">
         {displayed}
         {!done && <TerminalCursor visible={cursorOn} />}
@@ -382,7 +383,7 @@ function GregTypewriter() {
           transition={{ duration: 0.6 }}
           className="mt-6 flex flex-col gap-3"
         >
-          <p className="text-xs leading-relaxed text-[#64b5f6]/35">
+          <p className="text-xs leading-relaxed text-cyan-300/45">
             {GREG_FOLLOWUP}
           </p>
           <div className="flex items-center gap-4">
@@ -390,25 +391,25 @@ function GregTypewriter() {
               href="https://www.linkedin.com/in/gregpatini"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-medium tracking-widest text-[#64b5f6]/50 transition-colors hover:text-[#64b5f6]/90"
+              className="inline-flex items-center gap-1.5 text-xs font-medium tracking-widest text-cyan-300/60 transition-colors hover:text-cyan-200"
             >
-              <span className="text-[#64b5f6]/30">→</span> LinkedIn
+              <span className="text-cyan-300/45">→</span> LinkedIn
             </a>
             <a
               href="https://www.instagram.com/inartenino/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-medium tracking-widest text-[#64b5f6]/50 transition-colors hover:text-[#64b5f6]/90"
+              className="inline-flex items-center gap-1.5 text-xs font-medium tracking-widest text-cyan-300/60 transition-colors hover:text-cyan-200"
             >
-              <span className="text-[#64b5f6]/30">→</span> Instagram
+              <span className="text-cyan-300/45">→</span> Instagram
             </a>
             <a
               href="https://x.com/gregpatini"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-medium tracking-widest text-[#64b5f6]/50 transition-colors hover:text-[#64b5f6]/90"
+              className="inline-flex items-center gap-1.5 text-xs font-medium tracking-widest text-cyan-300/60 transition-colors hover:text-cyan-200"
             >
-              <span className="text-[#64b5f6]/30">→</span> X
+              <span className="text-cyan-300/45">→</span> X
             </a>
           </div>
         </motion.div>
@@ -479,7 +480,7 @@ function LaunchParticles() {
       {particles.map((p) => (
         <motion.div
           key={p.id}
-          className="absolute left-1/2 top-1/2 rounded-full bg-[#64b5f6]"
+          className="absolute left-1/2 top-1/2 rounded-full bg-cyan-300"
           style={{ width: p.size, height: p.size }}
           initial={{ opacity: 1, x: 0, y: 0, scale: 1 }}
           animate={{ opacity: 0, x: p.x, y: p.y, scale: 0 }}
@@ -592,7 +593,7 @@ export function WhoSection({
       className={`${GeistMono.className} relative flex min-h-dvh w-full flex-col overflow-hidden`}
       style={{
         background:
-          "linear-gradient(135deg, #0a1628 0%, #0d1f3c 40%, #0a1628 100%)",
+          "radial-gradient(120% 120% at 8% 8%, rgba(0,203,255,0.16), transparent 55%), radial-gradient(80% 90% at 92% 92%, rgba(82,94,255,0.14), transparent 58%), #050b14",
       }}
       onClick={handleContainerClick}
     >
@@ -601,7 +602,7 @@ export function WhoSection({
         className="pointer-events-none absolute inset-0 z-0 opacity-[0.04]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(100,181,246,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(100,181,246,0.3) 1px, transparent 1px)",
+            "linear-gradient(rgba(103,232,249,0.26) 1px, transparent 1px), linear-gradient(90deg, rgba(103,232,249,0.26) 1px, transparent 1px)",
           backgroundSize: "48px 48px",
         }}
       />
@@ -611,8 +612,23 @@ export function WhoSection({
         className="pointer-events-none absolute inset-0 z-10 opacity-[0.03]"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(100,181,246,0.1) 2px, rgba(100,181,246,0.1) 4px)",
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(103,232,249,0.1) 2px, rgba(103,232,249,0.1) 4px)",
         }}
+      />
+
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(65%_90%_at_50%_0%,rgba(34,211,238,0.16),transparent_65%)]"
+        animate={{ opacity: [0.55, 0.85, 0.55] }}
+        transition={{ duration: 6.5, ease: "easeInOut", repeat: Infinity }}
+        style={{ willChange: "opacity" }}
+      />
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-[-15%] left-0 z-0 w-[28vw] max-w-[420px] bg-linear-to-r from-transparent via-cyan-300/20 to-transparent blur-2xl"
+        animate={{ x: ["-40vw", "140vw"] }}
+        transition={{ duration: 5.8, ease: "linear", repeat: Infinity }}
+        style={{ willChange: "transform" }}
       />
 
       {/* Top bar */}
@@ -620,14 +636,15 @@ export function WhoSection({
         <button
           type="button"
           onClick={onBack}
-          className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-[#64b5f6]/50 transition-colors hover:text-[#64b5f6]/90"
+          className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-cyan-300/60 transition-colors hover:text-cyan-200"
         >
           <ChevronLeft className="size-4 shrink-0" aria-hidden />
           <span>Back</span>
         </button>
         <div className="ml-auto flex items-center gap-2">
-          <span className="size-2 rounded-full bg-[#64b5f6]/40" />
-          <span className="text-[10px] uppercase tracking-widest text-[#64b5f6]/30">
+          <AccessLogoutButton />
+          <span className="size-2 rounded-full bg-cyan-300/50" />
+          <span className="text-[10px] uppercase tracking-widest text-cyan-300/45">
             terminal v1.0
           </span>
         </div>
@@ -644,13 +661,13 @@ export function WhoSection({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.3 }}
-              className="flex w-full max-w-2xl flex-col items-center gap-8"
+              className="flex w-full max-w-4xl flex-col items-center gap-8"
             >
               <motion.p
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="text-xs tracking-wider text-[#64b5f6]/30"
+                className="text-xs tracking-wider text-cyan-300/40"
               >
                 type a command to begin
               </motion.p>
@@ -659,9 +676,9 @@ export function WhoSection({
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.4 }}
-                className="flex w-full items-center gap-2 border border-[#64b5f6]/15 bg-[#0a1628]/80 px-4 py-3 backdrop-blur-sm sm:px-5 sm:py-4"
+                className="flex w-full items-center gap-2 border border-cyan-300/20 bg-[#050b14]/75 px-4 py-3 backdrop-blur-md sm:px-5 sm:py-4"
               >
-                <span className="select-none text-sm text-[#64b5f6]/50 sm:text-base">
+                <span className="select-none text-sm text-cyan-300/65 sm:text-base">
                   $
                 </span>
                 <div className="relative flex-1">
@@ -671,13 +688,13 @@ export function WhoSection({
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="w-full bg-transparent text-sm text-[#e0e0e0] caret-transparent outline-none placeholder:text-[#64b5f6]/20 sm:text-base"
+                    className="w-full bg-transparent text-sm text-cyan-50/90 caret-transparent outline-none placeholder:text-cyan-300/30 sm:text-base"
                     placeholder="/who"
                     autoComplete="off"
                     spellCheck={false}
                   />
                   <span
-                    className="pointer-events-none absolute top-0 text-sm text-[#64b5f6] sm:text-base"
+                    className="pointer-events-none absolute top-0 text-sm text-cyan-200 sm:text-base"
                     style={{
                       left: `${inputValue.length}ch`,
                       opacity: cursorVisible ? 1 : 0,
@@ -692,7 +709,7 @@ export function WhoSection({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.2, duration: 0.8 }}
-                className="text-[10px] tracking-widest text-[#64b5f6]/20"
+                className="text-[10px] tracking-widest text-cyan-300/25"
               >
                 hint: /who
               </motion.p>
@@ -702,8 +719,8 @@ export function WhoSection({
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="text-sm text-[#64b5f6]/70 sm:text-base"
-                  style={{ textShadow: "0 0 8px rgba(100,181,246,0.3)" }}
+                  className="text-sm text-cyan-200/85 sm:text-base"
+                  style={{ textShadow: "0 0 10px rgba(103,232,249,0.35)" }}
                 >
                   {sofiaResponse}
                 </motion.p>
@@ -731,8 +748,8 @@ export function WhoSection({
                 }}
               >
                 <pre
-                  className="select-none text-center text-xs leading-[1.15] text-[#64b5f6] sm:text-sm sm:leading-[1.2]"
-                  style={{ textShadow: "0 0 12px rgba(100,181,246,0.4)" }}
+                  className="select-none text-center text-xs leading-[1.15] text-cyan-300 sm:text-sm sm:leading-[1.2]"
+                  style={{ textShadow: "0 0 14px rgba(103,232,249,0.5)" }}
                 >
                   {ASCII_ROCKET.join("\n")}
                 </pre>
@@ -768,7 +785,7 @@ export function WhoSection({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
-              className="flex w-full max-w-2xl flex-col gap-6 overflow-y-auto py-12 sm:py-16"
+              className="flex w-full max-w-3xl flex-col gap-6 overflow-y-auto border border-cyan-300/15 bg-[#050b14]/55 px-4 py-12 backdrop-blur-md sm:px-8 sm:py-16"
             >
               <motion.div
                 initial={{ opacity: 0, x: -12 }}
@@ -776,11 +793,11 @@ export function WhoSection({
                 transition={{ delay: 0.1, duration: 0.4 }}
                 className="flex items-center gap-3"
               >
-                <div className="h-px flex-1 bg-[#64b5f6]/15" />
-                <span className="text-xs uppercase tracking-[0.3em] text-[#64b5f6]/40">
+                <div className="h-px flex-1 bg-cyan-300/20" />
+                <span className="text-xs uppercase tracking-[0.3em] text-cyan-300/55">
                   who am i
                 </span>
-                <div className="h-px flex-1 bg-[#64b5f6]/15" />
+                <div className="h-px flex-1 bg-cyan-300/20" />
               </motion.div>
 
               <BioContent onComplete={() => setBioComplete(true)} />
@@ -794,16 +811,16 @@ export function WhoSection({
                     transition={{ delay: 0.4, duration: 0.6 }}
                     className="mt-8 flex flex-col gap-4"
                   >
-                    <p className="text-xs tracking-wider text-[#64b5f6]/30">
+                    <p className="text-xs tracking-wider text-cyan-300/40">
                       still don&apos;t get who am I? try to type{" "}
-                      <span className="text-[#64b5f6]/50">/greg</span>
+                      <span className="text-cyan-200/90">/greg</span>
                     </p>
 
                     <div
-                      className={`flex w-full cursor-text items-center gap-2 border bg-[#0a1628]/80 px-4 py-3 backdrop-blur-sm transition-colors sm:px-5 sm:py-4 ${
+                      className={`flex w-full cursor-text items-center gap-2 border bg-[#050b14]/75 px-4 py-3 backdrop-blur-md transition-colors sm:px-5 sm:py-4 ${
                         gregFocused
-                          ? "border-[#64b5f6]/30"
-                          : "border-[#64b5f6]/15"
+                          ? "border-cyan-300/45"
+                          : "border-cyan-300/20"
                       }`}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -811,12 +828,12 @@ export function WhoSection({
                         setTimeout(() => gregInputRef.current?.focus(), 0);
                       }}
                     >
-                      <span className="select-none text-sm text-[#64b5f6]/50 sm:text-base">
+                      <span className="select-none text-sm text-cyan-300/65 sm:text-base">
                         $
                       </span>
                       <div className="relative flex-1">
                         {gregStarted ? (
-                          <span className="text-sm text-[#e0e0e0] sm:text-base">
+                          <span className="text-sm text-cyan-50/90 sm:text-base">
                             /greg
                           </span>
                         ) : (
@@ -836,13 +853,13 @@ export function WhoSection({
                               }}
                               onFocus={() => setGregFocused(true)}
                               onBlur={() => setGregFocused(false)}
-                              className="w-full bg-transparent text-sm text-[#e0e0e0] caret-transparent outline-none placeholder:text-[#64b5f6]/20 sm:text-base"
+                              className="w-full bg-transparent text-sm text-cyan-50/90 caret-transparent outline-none placeholder:text-cyan-300/30 sm:text-base"
                               placeholder="/greg"
                               autoComplete="off"
                               spellCheck={false}
                             />
                             <span
-                              className="pointer-events-none absolute top-0 text-sm text-[#64b5f6] sm:text-base transition-opacity"
+                              className="pointer-events-none absolute top-0 text-sm text-cyan-200 sm:text-base transition-opacity"
                               style={{
                                 left: `${gregInputValue.length}ch`,
                                 opacity: gregFocused && cursorVisible ? 1 : 0,
@@ -860,8 +877,8 @@ export function WhoSection({
                         initial={{ opacity: 0, y: 4 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4 }}
-                        className="text-sm text-[#64b5f6]/70 sm:text-base"
-                        style={{ textShadow: "0 0 8px rgba(100,181,246,0.3)" }}
+                        className="text-sm text-cyan-200/85 sm:text-base"
+                        style={{ textShadow: "0 0 10px rgba(103,232,249,0.35)" }}
                       >
                         {sofiaResponse}
                       </motion.p>
@@ -887,9 +904,9 @@ export function WhoSection({
       </div>
 
       {/* Bottom status bar */}
-      <div className="relative z-20 flex items-center justify-between border-t border-[#64b5f6]/10 px-4 py-2 sm:px-6">
-        <span className="text-[10px] text-[#64b5f6]/20">session::active</span>
-        <span className="text-[10px] text-[#64b5f6]/20">
+      <div className="relative z-20 flex items-center justify-between border-t border-cyan-300/15 px-4 py-2 sm:px-6">
+        <span className="text-[10px] text-cyan-300/30">session::active</span>
+        <span className="text-[10px] text-cyan-300/30">
           {phase === "terminal"
             ? "awaiting input"
             : showBio

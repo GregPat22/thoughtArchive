@@ -1,8 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { useMagneticPull } from "motion-plus/react";
+import { motion, useInView } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -30,21 +29,18 @@ const itemVariants = {
 export function HeroSection() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const { x: magneticX, y: magneticY } = useMagneticPull(ctaRef, 0.35);
 
   return (
     <section
       ref={ref}
       className="relative flex min-h-[85vh] flex-col items-center justify-center overflow-hidden px-4 py-24 sm:px-6"
     >
-      {/* Sfondo gradient sottile */}
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,var(--primary)/12%,transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(95%_120%_at_8%_8%,rgba(0,203,255,0.16),transparent_58%),radial-gradient(70%_95%_at_92%_92%,rgba(82,94,255,0.12),transparent_58%)]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -top-1/2 left-1/2 h-[600px] w-[600px] -translate-x-1/2 bg-primary/5 blur-3xl"
+        className="pointer-events-none absolute -top-1/2 left-1/2 h-[600px] w-[600px] -translate-x-1/2 bg-cyan-300/10 blur-3xl"
         aria-hidden
       />
 
@@ -56,7 +52,7 @@ export function HeroSection() {
       >
         <motion.p
           variants={itemVariants}
-          className="mb-4 text-sm font-medium tracking-wide text-primary"
+          className="mb-4 text-sm font-medium tracking-wide text-cyan-300/80"
         >
           Portfolio & Creative Developer
         </motion.p>
@@ -66,10 +62,10 @@ export function HeroSection() {
           variants={itemVariants}
           className="mb-6 text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl"
         >
-          <span className="block text-foreground">Ciao, sono </span>
+          <span className="block text-cyan-50/90">Ciao, sono </span>
           <span
             className={cn(
-              "mt-2 block bg-linear-to-r from-primary via-primary/90 to-primary/70 bg-clip-text text-transparent",
+              "mt-2 block bg-linear-to-r from-cyan-300 via-cyan-200 to-indigo-300 bg-clip-text text-transparent",
               "bg-size-[200%_auto] animate-[gradient-shift_6s_ease_infinite]"
             )}
           >
@@ -79,27 +75,23 @@ export function HeroSection() {
 
         <motion.p
           variants={itemVariants}
-          className="mb-10 max-w-xl text-lg text-muted-foreground"
+          className="mb-10 max-w-xl text-lg text-cyan-50/70"
         >
           Design e sviluppo di esperienze digitali minimali e performanti.
           Frontend, motion e UI.
         </motion.p>
 
-        {/* CTA con effetto magnetic (Motion+) e hover scale + glow */}
+        {/* CTA with subtle hover feedback */}
         <motion.div
-          ref={ctaRef}
           variants={itemVariants}
-          style={{
-            x: magneticX,
-            y: magneticY,
-            willChange: "transform",
-          }}
+          style={{ willChange: "transform" }}
           className="inline-block"
         >
           <Button
             size="lg"
             className={cn(
               "group relative overflow-hidden",
+              "bg-cyan-300/15 text-cyan-50 hover:bg-cyan-300/20",
               "focus-visible:scale-105"
             )}
           >
@@ -126,7 +118,7 @@ export function HeroSection() {
                   }
                 : {}
             }
-            className="h-1.5 w-1.5 bg-primary/60"
+            className="h-1.5 w-1.5 bg-cyan-300/60"
           />
         ))}
       </div>

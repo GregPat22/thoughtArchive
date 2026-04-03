@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +33,7 @@ export function Header() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-md"
+      className="fixed top-0 left-0 right-0 z-50 border-b border-cyan-300/15 bg-[#050b14]/75 backdrop-blur-md"
     >
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
         <motion.div
@@ -44,7 +44,7 @@ export function Header() {
           <Link
             href="/"
             className={cn(
-              "text-sm font-medium text-foreground transition-colors hover:text-detail"
+              "text-sm font-medium text-cyan-100/90 transition-colors hover:text-cyan-200"
             )}
           >
             Portfolio
@@ -60,7 +60,7 @@ export function Header() {
             <motion.div key={item.href} variants={navItemVariants}>
               <Link
                 href={item.href}
-                className="text-sm text-muted-foreground transition-colors hover:text-detail"
+                className="text-sm text-cyan-300/70 transition-colors hover:text-cyan-200"
               >
                 {item.label}
               </Link>
@@ -70,7 +70,7 @@ export function Header() {
         <button
           type="button"
           aria-label="Menu"
-          className="p-2 text-muted-foreground hover:bg-muted hover:text-detail md:hidden"
+          className="p-2 text-cyan-300/70 hover:bg-cyan-300/10 hover:text-cyan-200 md:hidden"
         >
           <Menu className="size-5" />
         </button>

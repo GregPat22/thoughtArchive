@@ -1,23 +1,7 @@
 "use client";
 
 import { LinesBackground } from "@/components/LinesBackground";
-import { PageHoverProvider, usePageHover } from "@/context/PageHoverContext";
-
-function BodyContent({ children }: { children: React.ReactNode }) {
-  const { isHoveringButton } = usePageHover();
-  return (
-    <>
-      <LinesBackground />
-      <div
-        className={`relative z-10 min-h-dvh transition-colors duration-300 ${
-          isHoveringButton ? "bg-[#fdfcdc] text-[#0a0a0a]" : "bg-background text-foreground"
-        }`}
-      >
-        {children}
-      </div>
-    </>
-  );
-}
+import { PageHoverProvider } from "@/context/PageHoverContext";
 
 export function LayoutClient({
   children,
@@ -26,7 +10,10 @@ export function LayoutClient({
 }) {
   return (
     <PageHoverProvider>
-      <BodyContent>{children}</BodyContent>
+      <LinesBackground />
+      <div className="relative z-10 min-h-dvh bg-background text-foreground">
+        {children}
+      </div>
     </PageHoverProvider>
   );
 }

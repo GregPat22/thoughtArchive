@@ -1,11 +1,6 @@
 "use client";
 
-import { usePageHover } from "@/context/PageHoverContext";
-
 export function LinesBackground() {
-  const { isHoveringButton } = usePageHover();
-  const frameColor = isHoveringButton ? "#0a0a0a" : "white";
-
   return (
     <div
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
@@ -17,8 +12,8 @@ export function LinesBackground() {
         style={{
           left: "clamp(0.75rem, 3vw, 1.5rem)",
           top: "clamp(0.75rem, 3vw, 1.5rem)",
-          borderTop: `0.5px solid ${frameColor}`,
-          borderLeft: `0.5px solid ${frameColor}`,
+          borderTop: "0.5px solid rgba(103,232,249,0.5)",
+          borderLeft: "0.5px solid rgba(103,232,249,0.5)",
         }}
       />
       {/* Top-right */}
@@ -27,8 +22,8 @@ export function LinesBackground() {
         style={{
           right: "clamp(0.75rem, 3vw, 1.5rem)",
           top: "clamp(0.75rem, 3vw, 1.5rem)",
-          borderTop: `0.5px solid ${frameColor}`,
-          borderRight: `0.5px solid ${frameColor}`,
+          borderTop: "0.5px solid rgba(103,232,249,0.5)",
+          borderRight: "0.5px solid rgba(103,232,249,0.5)",
         }}
       />
       {/* Bottom-left */}
@@ -37,8 +32,8 @@ export function LinesBackground() {
         style={{
           left: "clamp(0.75rem, 3vw, 1.5rem)",
           bottom: "clamp(0.75rem, 3vw, 1.5rem)",
-          borderBottom: `0.5px solid ${frameColor}`,
-          borderLeft: `0.5px solid ${frameColor}`,
+          borderBottom: "0.5px solid rgba(103,232,249,0.5)",
+          borderLeft: "0.5px solid rgba(103,232,249,0.5)",
         }}
       />
       {/* Bottom-right */}
@@ -47,8 +42,8 @@ export function LinesBackground() {
         style={{
           right: "clamp(0.75rem, 3vw, 1.5rem)",
           bottom: "clamp(0.75rem, 3vw, 1.5rem)",
-          borderBottom: `0.5px solid ${frameColor}`,
-          borderRight: `0.5px solid ${frameColor}`,
+          borderBottom: "0.5px solid rgba(103,232,249,0.5)",
+          borderRight: "0.5px solid rgba(103,232,249,0.5)",
         }}
       />
     </div>

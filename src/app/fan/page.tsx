@@ -1,33 +1,37 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { ChevronLeft, Heart } from "lucide-react";
+import { AccessLogoutButton } from "@/components/AccessLogoutButton";
 
 const CORGI_BG =
   "https://images.unsplash.com/photo-1612536057832-2ff7ead58194?w=1920&q=80";
 
 export default function FanPage() {
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-linear-to-br from-pink-100 via-pink-50 to-rose-200 dark:from-pink-950/95 dark:via-rose-900/90 dark:to-pink-900/95">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#050b14]">
       {/* Corgi background — soft, decorative */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-25"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
         style={{ backgroundImage: `url(${CORGI_BG})` }}
         aria-hidden
       />
-      <div className="absolute inset-0 bg-linear-to-t from-pink-200/80 via-transparent to-pink-100/60 dark:from-pink-950/90 dark:via-transparent dark:to-pink-900/70" />
+      <div className="absolute inset-0 bg-[radial-gradient(95%_120%_at_8%_8%,rgba(0,203,255,0.14),transparent_58%),radial-gradient(70%_95%_at_92%_92%,rgba(82,94,255,0.12),transparent_58%)]" />
 
       <div className="relative z-10 flex min-h-dvh flex-col">
         {/* Top bar */}
-        <div className="sticky top-0 z-20 flex items-center border-b border-pink-300/30 bg-pink-50/80 px-4 py-3 backdrop-blur-sm dark:border-pink-500/20 dark:bg-pink-950/80 sm:px-6">
+        <div className="sticky top-0 z-20 flex items-center border-b border-cyan-300/15 bg-[#050b14]/70 px-4 py-3 backdrop-blur-sm sm:px-6">
           <Link
             href="/"
-            className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-pink-700/70 transition-colors hover:text-pink-800 dark:text-pink-300/80 dark:hover:text-pink-200"
+            className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-cyan-300/70 transition-colors hover:text-cyan-200"
           >
             <ChevronLeft className="size-4 shrink-0" aria-hidden />
             <span>Back</span>
           </Link>
+          <div className="ml-auto">
+            <AccessLogoutButton />
+          </div>
         </div>
 
         {/* Content — enjoy */}
@@ -55,18 +59,18 @@ export default function FanPage() {
               }}
             >
               <Heart
-                className="size-14 fill-pink-400 text-pink-400 dark:fill-pink-500 dark:text-pink-500"
+                className="size-14 fill-cyan-300/75 text-cyan-300/75"
                 aria-hidden
               />
             </motion.span>
-            <h1 className="text-3xl font-normal tracking-tight text-pink-900 dark:text-pink-100 sm:text-4xl">
+            <h1 className="text-3xl font-normal tracking-tight text-cyan-50 sm:text-4xl">
               Fan page
             </h1>
-            <p className="text-lg leading-relaxed text-pink-700/90 dark:text-pink-200/90">
+            <p className="text-lg leading-relaxed text-cyan-100/80">
               A little corner to enjoy. Corgis, good vibes, and nothing else.
             </p>
             <motion.p
-              className="text-sm text-pink-600/80 dark:text-pink-300/70"
+              className="text-sm text-cyan-300/60"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
