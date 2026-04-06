@@ -30,8 +30,8 @@ importers:
         specifier: ^0.577.0
         version: 0.577.0(react@19.2.3)
       motion-plus:
-        specifier: https://api.motion.dev/registry.tgz?package=motion-plus&version=2.11.2&token=2145329210898e40605cfa007c59055ba655637d15bbefa9f785dcfec2bf1d02
-        version: https://api.motion.dev/registry.tgz?package=motion-plus&version=2.11.2&token=2145329210898e40605cfa007c59055ba655637d15bbefa9f785dcfec2bf1d02(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: file:vendor/motion-plus-2.11.2.tgz
+        version: file:vendor/motion-plus-2.11.2.tgz(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       next:
         specifier: 16.1.6
         version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -1628,8 +1628,8 @@ packages:
   motion-plus-dom@2.11.2:
     resolution: {integrity: sha512-WNXCn7XRS7H5ZJiwceJMbNjXbhVwjhQquJn/3LuyPkwMcxtOtQmc+cCas46bNpYNfKCyJs94oN9XRcBWmT2LxQ==}
 
-  motion-plus@https://api.motion.dev/registry.tgz?package=motion-plus&version=2.11.2&token=2145329210898e40605cfa007c59055ba655637d15bbefa9f785dcfec2bf1d02:
-    resolution: {integrity: sha512-WAmMJ8YMJvXSbdyzg9d7SESp+WrlbN39Svbxf/nVqoX7ZBhlHMt/Y/4jtozmnVWyDh3oN1DDdYlj89JBE7PqeQ==, tarball: https://api.motion.dev/registry.tgz?package=motion-plus&version=2.11.2&token=2145329210898e40605cfa007c59055ba655637d15bbefa9f785dcfec2bf1d02}
+  motion-plus@file:vendor/motion-plus-2.11.2.tgz:
+    resolution: {integrity: sha512-J/gpeLP3TVvw7dMfs6/iKjCBPTt9gUgdUVzSXP0b5Z4G1xIX0Cr88uyjyWg1bRs6/7awgMw7UhO46iUKHftRfQ==, tarball: file:vendor/motion-plus-2.11.2.tgz}
     version: 2.11.2
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
@@ -3771,7 +3771,7 @@ snapshots:
       - react
       - react-dom
 
-  motion-plus@https://api.motion.dev/registry.tgz?package=motion-plus&version=2.11.2&token=2145329210898e40605cfa007c59055ba655637d15bbefa9f785dcfec2bf1d02(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  motion-plus@file:vendor/motion-plus-2.11.2.tgz(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       motion: 12.35.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       motion-dom: 12.35.1
