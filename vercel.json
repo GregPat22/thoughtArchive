@@ -1,3 +1,4 @@
 {
+  "framework": null,
   "buildCommand": "pnpm run build > /tmp/build-log.txt 2>&1 || (mkdir -p .vercel/output/static && cp /tmp/build-log.txt .vercel/output/static/build-log.txt && echo '{\"version\": 3}' > .vercel/output/config.json)"
 }
